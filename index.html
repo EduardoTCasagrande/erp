@@ -64,10 +64,13 @@
     ];
 
     const TESTIMONIALS = [
-      { name:"Quiosque A", role:"Shopping", text:"Depois que começamos, o caixa ficou muito mais organizado e o estoque parou de dar diferença." },
-      { name:"Quiosque B", role:"Centro comercial", text:"O ranking e a meta fizeram as meninas se puxarem mais. Dá pra ver as vendas na hora." },
-      { name:"Quiosque C", role:"Galeria", text:"A bipagem agilizou demais. Antes era tudo manual, agora é bem mais rápido." },
-    ];
+      { name:"Princesa Reborn - Interlagos", role:"Shopping", text:"A organização das vendas melhorou muito. Hoje conseguimos fechar o dia com muito mais segurança e controle." },
+      { name:"Princesa Reborn - Ibirapuera", role:"Shopping", text:"O painel de resultados facilitou demais o acompanhamento das metas. A equipe ficou mais motivada e focada." },
+      { name:"Princesa Reborn - Itaquera", role:"Shopping", text:"O controle de estoque ficou muito mais preciso. Reduzimos perdas e ganhamos tempo no atendimento." },
+      { name:"Princesa Reborn - Center Norte", role:"Shopping", text:"Os relatórios ajudam bastante na tomada de decisão. Agora sabemos exatamente quais produtos giram mais." },
+      { name:"Princesa Reborn - Aricanduva", role:"Shopping", text:"O sistema trouxe mais agilidade no caixa e diminuiu filas nos horários de pico." },
+      { name:"Princesa Reborn - Anália Franco", role:"Shopping", text:"Ficou muito mais fácil acompanhar comissão e desempenho individual. A equipe está mais engajada." },
+      ];
 
     const PRICING = [
       { name:"Start", price:"R$ 149/mês", desc:"Pra quem quer vender e controlar o básico bem feito.", items:["Venda por bipagem","Estoque + reposição","Caixa + relatórios","Usuários por nível"], cta:"Quero começar" },
@@ -76,9 +79,8 @@
     ];
 
     const FAQ = [
-      { q:"Funciona em tablet?", a:"Sim. Funciona em tablet/PC/notebook pelo navegador. Para quiosque, recomendamos um aparelho com boa performance e internet estável." },
-      { q:"E se a internet cair?", a:"O sistema é online. Você pode usar internet + backup (4G). Se você implementar modo contingência/offline com sincronização, vira um diferencial ainda maior." },
-      { q:"Imprime cupom?", a:"Sim. Para ficar mais confiável em PDV, o ideal é usar cupom em página de impressão (HTML) e padronizar navegador/impressora. Dá pra evoluir para impressão direta (QZ/agent local) também." },
+      { q:"Funciona em tablet?", a:"Depende. O sistema funciona em tablet, PC e notebook pelo navegador. Porém, em alguns modelos de tablet podem ocorrer limitações de desempenho. Estamos constantemente realizando melhorias para otimizar a experiência nesses dispositivos. Para quiosque, recomendamos aparelhos com boa performance e internet estável."},      { q:"E se a internet cair?", a:"O sistema é online. Você pode usar internet + backup (4G)." },
+      { q:"Imprime cupom?", a:"Sim. Para ficar mais confiável em PDV, o ideal é usar cupom em página de impressão (HTML) e padronizar navegador/impressora." },
       { q:"Tem controle de acesso?", a:"Sim. Níveis de usuário para limitar o que cada pessoa pode ver e fazer." },
     ];
   </script>
@@ -224,7 +226,6 @@
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
               <div class="text-xs text-slate-500">Vendas hoje</div>
               <div class="text-2xl font-extrabold">R$ 4.980</div>
-              <div class="text-xs text-blue-700 font-extrabold mt-1">+12% vs ontem</div>
             </div>
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
               <div class="text-xs text-slate-500">Meta do dia</div>
@@ -246,9 +247,6 @@
                   <div class="font-extrabold">🥉 Carol</div><div class="text-slate-600">R$ 980</div>
                 </div>
               </div>
-              <p class="text-xs text-slate-500 mt-3">
-                (coloque prints reais aqui depois: vendas, estoque, caixa, metas)
-              </p>
             </div>
           </div>
         </div>
@@ -289,7 +287,7 @@
       <div id="featuresGrid" class="mt-8 grid md:grid-cols-2 gap-4"></div>
 
       <div class="mt-8 p-6 rounded-2xl border border-blue-200 bg-blue-50">
-        <div class="font-extrabold text-blue-900">💡 Extra (diferencial que você pode anunciar)</div>
+        <div class="font-extrabold text-blue-900">💡 Extra</div>
         <div class="text-slate-700 mt-1">
           <span class="font-semibold text-blue-900">Modo contingência/offline com sincronização</span> (em desenvolvimento/roadmap):
           vende mesmo se a internet oscilar e sincroniza quando voltar.
@@ -301,13 +299,9 @@
   <!-- Depoimentos -->
   <section class="max-w-6xl mx-auto px-4 py-14">
     <h2 class="text-3xl font-black">Resultados e prova social</h2>
-    <p class="mt-2 text-slate-600">
-      Troque esses textos por depoimentos reais dos seus quiosques (fica muito forte).
-    </p>
 
     <div class="mt-5 flex items-center justify-between">
       <div class="text-xs font-bold text-slate-500">Arraste para o lado →</div>
-      <div class="hidden md:block text-xs text-slate-400">No PC vira grade automaticamente</div>
     </div>
 
     <div id="testimonialsWrap"
