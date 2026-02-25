@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>QRize — Vendas rápidas por bipagem</title>
-  <meta name="description" content="ERP para quiosques: venda por bipagem, estoque, caixa, metas e ranking. Veja uma demo no WhatsApp."/>
+  <meta name="description" content="ERP para quiosques: venda por bipagem, estoque, caixa, metas e ranking. Funciona até sem internet (contingência). Veja uma demo no WhatsApp."/>
 
   <!-- Font (Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,6 @@
 
   <style>
     html { scroll-behavior: smooth; }
-    /* scrollbar suave (opcional) */
     ::-webkit-scrollbar { height: 10px; width: 10px; }
     ::-webkit-scrollbar-thumb { background: rgba(100,116,139,.35); border-radius: 999px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -41,26 +40,25 @@
 
   <!-- CONFIG (edite aqui) -->
   <script>
-    const BRAND_NAME = "QRize"; // <- troque
-    const WHATS_URL  = "https://wa.me/5511961510757?text=Oi!%20Quero%20ver%20uma%20demo%20do%20sistema%20para%20quiosques."; // <- troque
+    const BRAND_NAME = "QRize";
+    const WHATS_URL  = "https://wa.me/5511961510757?text=Oi!%20Quero%20ver%20uma%20demo%20do%20sistema%20para%20quiosques.";
 
-    // Conteúdo (edite fácil)
     const BENEFITS = [
       { icon:"⚡", title:"Atendimento rápido", desc:"Venda por bipagem pra fila andar e não perder venda." },
+      { icon:"🛰️", title:"Modo offline (contingência)", desc:"Se a internet cair, continua vendendo. Sincroniza automaticamente quando voltar." },
       { icon:"📦", title:"Estoque na prática", desc:"Reposição por bipagem e controle claro do que sai e entra." },
       { icon:"💰", title:"Caixa organizado", desc:"Abertura/fechamento com relatórios para conferência." },
-      { icon:"📊", title:"Visão do dono", desc:"Dashboards das vendas e indicadores para decidir rápido." },
       { icon:"🏆", title:"Equipe engajada", desc:"Pódio das vendedoras + metas com gamificação." },
       { icon:"🕒", title:"Controle de ponto", desc:"Funcionários batem ponto e você acompanha registros." },
     ];
 
     const FEATURES = [
-      { title:"Venda por bipagem", items:["Bipou o SKU, entra na venda na hora","Autocomplete para achar SKU rápido","Promoções e descontos"] },
+      { title:"Venda por bipagem", items:["Bipou o SKU, entra na venda na hora","Autocomplete para achar SKU rápido","Promoções e descontos","Impressão de cupom (ESC/HTML)"] },
+      { title:"Modo offline (contingência)", items:["Continua vendendo sem internet","Salva local com segurança","Sincroniza ao reconectar","Evita venda duplicada (idempotência)"] },
       { title:"Reposição por bipagem", items:["Entrada rápida no estoque","Histórico de movimentações","Menos erro no controle"] },
       { title:"Caixa completo", items:["Abertura e fechamento","Relatórios por período","Conferência de pagamentos"] },
       { title:"Dashboards + ranking", items:["Painel de vendas","Pódio das vendedoras","Comparativo por quiosque"] },
       { title:"Metas gamificadas", items:["Cadastra meta","Barra de progresso automática","Motiva a equipe no dia"] },
-      { title:"Controle de ponto", items:["Registro de entrada/saída","Relatório de batidas","Acesso por nível de usuário"] },
     ];
 
     const TESTIMONIALS = [
@@ -70,17 +68,19 @@
       { name:"Princesa Reborn - Center Norte", role:"Shopping", text:"Os relatórios ajudam bastante na tomada de decisão. Agora sabemos exatamente quais produtos giram mais." },
       { name:"Princesa Reborn - Aricanduva", role:"Shopping", text:"O sistema trouxe mais agilidade no caixa e diminuiu filas nos horários de pico." },
       { name:"Princesa Reborn - Anália Franco", role:"Shopping", text:"Ficou muito mais fácil acompanhar comissão e desempenho individual. A equipe está mais engajada." },
-      ];
+    ];
 
     const PRICING = [
       { name:"Start", price:"R$ 149/mês", desc:"Pra quem quer vender e controlar o básico bem feito.", items:["Venda por bipagem","Estoque + reposição","Caixa + relatórios","Usuários por nível"], cta:"Quero começar" },
-      { name:"Pro", price:"R$ 199/mês", desc:"Pra quem quer gestão e performance do time.", items:["Tudo do Start","Dashboards de vendas","Pódio + metas gamificadas","Controle de ponto"], highlight:true, cta:"Quero o Pro" },
+      { name:"Pro", price:"R$ 199/mês", desc:"Pra quem quer gestão e performance do time.", items:["Tudo do Start","Modo offline (contingência)","Dashboards de vendas","Pódio + metas gamificadas","Controle de ponto"], highlight:true, cta:"Quero o Pro" },
       { name:"Growth", price:"Sob consulta", desc:"Para redes com vários quiosques e necessidades específicas.", items:["Treinamento","Padronização de PDV/impressão","Integrações e ajustes","SLA/atendimento"], cta:"Falar comigo" },
     ];
 
     const FAQ = [
-      { q:"Funciona em tablet?", a:"Depende. O sistema funciona em tablet, PC e notebook pelo navegador. Porém, em alguns modelos de tablet podem ocorrer limitações de desempenho. Estamos constantemente realizando melhorias para otimizar a experiência nesses dispositivos. Para quiosque, recomendamos aparelhos com boa performance e internet estável."},      { q:"E se a internet cair?", a:"O sistema é online. Você pode usar internet + backup (4G)." },
-      { q:"Imprime cupom?", a:"Sim. Para ficar mais confiável em PDV, o ideal é usar cupom em página de impressão (HTML) e padronizar navegador/impressora." },
+      { q:"E se a internet cair?", a:"Você continua vendendo no modo contingência/offline. As vendas ficam salvas localmente e o sistema sincroniza automaticamente quando a internet voltar. (Emissão de nota fiscal precisa de internet.)" },
+      { q:"Imprime cupom?", a:"Sim. Dá para imprimir cupom de forma confiável (HTML/ESC). O ideal é padronizar o navegador e a impressora do PDV." },
+      { q:"Nota fiscal sai offline?", a:"Não. Emissão de NFC-e/NF precisa de internet. No offline você vende normalmente e emite a nota quando reconectar." },
+      { q:"Funciona em tablet?", a:"Funciona em tablet, PC e notebook pelo navegador. Para quiosque, recomendamos aparelho com boa performance e, se possível, internet + backup (4G)." },
       { q:"Tem controle de acesso?", a:"Sim. Níveis de usuário para limitar o que cada pessoa pode ver e fazer." },
     ];
   </script>
@@ -88,13 +88,10 @@
   <!-- Top bar -->
   <header class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur border-b border-slate-800/70">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-
-      <!-- Logo -->
       <a href="#top" class="flex items-center gap-3">
         <img src="qrize.png" alt="QRize ERP + CRM" class="h-20 md:h-24 w-auto object-contain" />
       </a>
 
-      <!-- Navegação (Desktop) -->
       <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
         <a class="hover:text-blue-300 transition" href="#beneficios">Benefícios</a>
         <a class="hover:text-blue-300 transition" href="#recursos">Recursos</a>
@@ -103,7 +100,6 @@
       </nav>
 
       <div class="flex items-center gap-3">
-        <!-- Botão (Desktop) -->
         <a id="ctaTop"
            target="_blank"
            class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl
@@ -113,7 +109,6 @@
           Solicitar Demo <span aria-hidden="true">→</span>
         </a>
 
-        <!-- Hamburguer (Mobile) -->
         <button
           id="menuBtn"
           type="button"
@@ -131,7 +126,6 @@
       </div>
     </div>
 
-    <!-- Menu Mobile -->
     <div id="mobileMenu" class="md:hidden hidden border-t border-slate-800/70 bg-slate-950">
       <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-3 text-slate-200 font-semibold">
         <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#beneficios">Benefícios</a>
@@ -166,6 +160,11 @@
             Feito para quiosques • Vendas rápidas • Controle total
           </div>
 
+          <!-- NOVO: destaque offline -->
+          <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-extrabold border border-blue-200">
+            🛰️ Vende mesmo sem internet • sincroniza ao reconectar
+          </div>
+
           <h1 class="mt-4 text-4xl md:text-5xl font-black tracking-tight leading-[1.05]">
             Venda mais rápido no quiosque com
             <span class="text-blue-700">bipagem</span>, metas e controle de caixa.
@@ -174,7 +173,7 @@
           <p class="mt-4 text-lg text-slate-700">
             <b id="brandInline"></b> é um sistema web para quiosques com:
             venda e reposição por bipagem, estoque, abertura/fechamento de caixa, dashboards,
-            ranking de vendedoras, metas gamificadas e controle de ponto.
+            ranking de vendedoras, metas gamificadas e <b>modo contingência/offline</b>.
           </p>
 
           <div class="mt-6 flex flex-col sm:flex-row gap-3">
@@ -199,23 +198,22 @@
               <div class="text-slate-600">Fluxo rápido pra fila não travar.</div>
             </div>
             <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition">
-              <div class="font-extrabold text-blue-900">📊 Gestão na hora</div>
-              <div class="text-slate-600">Dashboards e relatórios.</div>
+              <div class="font-extrabold text-blue-900">🛰️ Internet caiu?</div>
+              <div class="text-slate-600">Continua vendendo no offline.</div>
             </div>
           </div>
 
           <div class="mt-5 flex flex-wrap gap-2 text-xs">
             <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-100 font-bold">Sem travar a fila</span>
-            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-100 font-bold">Relatórios na hora</span>
+            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-100 font-bold">Sincroniza automático</span>
             <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-100 font-bold">Acesso por perfil</span>
           </div>
 
           <p class="mt-4 text-xs text-slate-500">
-            * Funciona em computador/notebook/tablet com navegador. Recomendado: internet estável.
+            * Nota fiscal precisa de internet. No offline você vende e emite quando reconectar.
           </p>
         </div>
 
-        <!-- Mock/prints -->
         <div class="bg-white/85 backdrop-blur border border-slate-200 rounded-3xl shadow-glow p-5">
           <div class="flex items-center justify-between">
             <div class="font-extrabold">Prévia do painel</div>
@@ -247,6 +245,14 @@
                   <div class="font-extrabold">🥉 Carol</div><div class="text-slate-600">R$ 980</div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- mini badge offline -->
+          <div class="mt-4 p-4 rounded-2xl border border-blue-200 bg-blue-50">
+            <div class="font-extrabold text-blue-900">🛰️ Contingência/offline</div>
+            <div class="text-slate-700 mt-1 text-sm">
+              Vendas salvas localmente e sincronizadas ao reconectar.
             </div>
           </div>
         </div>
@@ -286,11 +292,13 @@
 
       <div id="featuresGrid" class="mt-8 grid md:grid-cols-2 gap-4"></div>
 
+      <!-- atualizei o "Extra" -->
       <div class="mt-8 p-6 rounded-2xl border border-blue-200 bg-blue-50">
-        <div class="font-extrabold text-blue-900">💡 Extra</div>
+        <div class="font-extrabold text-blue-900">🛰️ Modo contingência/offline</div>
         <div class="text-slate-700 mt-1">
-          <span class="font-semibold text-blue-900">Modo contingência/offline com sincronização</span> (em desenvolvimento/roadmap):
-          vende mesmo se a internet oscilar e sincroniza quando voltar.
+          Quando a internet oscila, o sistema <span class="font-semibold text-blue-900">continua vendendo</span>,
+          salva localmente e <span class="font-semibold text-blue-900">sincroniza automaticamente</span> ao reconectar.
+          <span class="text-slate-600">(Nota fiscal precisa de internet.)</span>
         </div>
       </div>
     </div>
@@ -368,21 +376,17 @@
     </div>
   </footer>
 
-  <!-- Render + interações -->
   <script>
-    // Injeta infos fixas
     document.title = `${BRAND_NAME} — Vendas rápidas por bipagem`;
     document.getElementById('brandInline').textContent = BRAND_NAME;
     document.getElementById('footerCopy').textContent =
       `© ${new Date().getFullYear()} ${BRAND_NAME}. Todos os direitos reservados.`;
 
-    // CTAs
     ["ctaTop","ctaMobile","ctaHero","ctaProposal","ctaFooter"].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.href = WHATS_URL;
     });
 
-    // Benefícios
     const benefitsGrid = document.getElementById('benefitsGrid');
     benefitsGrid.innerHTML = BENEFITS.map(b => `
       <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition
@@ -394,7 +398,6 @@
       </div>
     `).join('');
 
-    // Recursos
     const featuresGrid = document.getElementById('featuresGrid');
     featuresGrid.innerHTML = FEATURES.map(r => `
       <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-white hover:shadow-glow transition
@@ -411,7 +414,6 @@
       </div>
     `).join('');
 
-    // Depoimentos
     const testimonialsWrap = document.getElementById('testimonialsWrap');
     testimonialsWrap.innerHTML = TESTIMONIALS.map(d => `
       <article class="min-w-[85%] sm:min-w-[70%] md:min-w-0 snap-start
@@ -424,7 +426,6 @@
       </article>
     `).join('');
 
-    // Planos
     const pricingWrap = document.getElementById('pricingWrap');
     pricingWrap.innerHTML = PRICING.map(p => `
       <div class="min-w-[88%] sm:min-w-[70%] md:min-w-0 snap-start
@@ -455,7 +456,6 @@
       </div>
     `).join('');
 
-    // FAQ
     const faqGrid = document.getElementById('faqGrid');
     faqGrid.innerHTML = FAQ.map(f => `
       <details class="group p-5 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition">
@@ -467,7 +467,6 @@
       </details>
     `).join('');
 
-    // Menu hamburguer
     (function () {
       const btn = document.getElementById('menuBtn');
       const menu = document.getElementById('mobileMenu');
@@ -487,10 +486,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
