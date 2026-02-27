@@ -3,19 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>QRize — Vendas rápidas por bipagem</title>
-  <meta name="description" content="ERP para quiosques: venda por bipagem, estoque, caixa, metas e ranking. Funciona até sem internet (contingência). Veja uma demo no WhatsApp."/>
+  <title>QRize — Pare de perder venda quando a internet cai</title>
+  <meta name="description" content="Sistema para quiosques com PDV rápido por bipagem, fechamento de caixa que bate, estoque prático e modo offline real com sincronização. Veja a demo no WhatsApp." />
 
-  <!-- Font (Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
@@ -38,451 +35,573 @@
 
 <body class="bg-slate-50 text-slate-900 font-sans">
 
-  <!-- CONFIG (edite aqui) -->
-  <script>
-    const BRAND_NAME = "QRize";
-    const WHATS_URL  = "https://wa.me/5511961510757?text=Oi!%20Quero%20ver%20uma%20demo%20do%20sistema%20para%20quiosques.";
+<script>
+  // ====== CONFIG ======
+  const BRAND_NAME = "QRize";
+  const WHATS_URL  = "https://wa.me/5511961510757?text=Oi!%20Quero%20ver%20uma%20demo%20do%20QRize%20para%20quiosques.";
 
-    const BENEFITS = [
-      { icon:"⚡", title:"Atendimento rápido", desc:"Venda por bipagem pra fila andar e não perder venda." },
-      { icon:"🛰️", title:"Modo offline (contingência)", desc:"Se a internet cair, continua vendendo. Sincroniza automaticamente quando voltar." },
-      { icon:"📦", title:"Estoque na prática", desc:"Reposição por bipagem e controle claro do que sai e entra." },
-      { icon:"💰", title:"Caixa organizado", desc:"Abertura/fechamento com relatórios para conferência." },
-      { icon:"🏆", title:"Equipe engajada", desc:"Pódio das vendedoras + metas com gamificação." },
-      { icon:"🕒", title:"Controle de ponto", desc:"Funcionários batem ponto e você acompanha registros." },
-    ];
+  // Hero micro-provas (use números reais quando tiver)
+  const METRICS = [
+    { label: "Teste guiado", value: "15 min no WhatsApp" },
+    { label: "Implantação", value: "em poucas horas" },
+    { label: "Offline real", value: "continua vendendo" },
+    { label: "NF no plano", value: "online inclusa" },
+  ];
 
-    const FEATURES = [
-      { title:"Venda por bipagem", items:["Bipou o SKU, entra na venda na hora","Autocomplete para achar SKU rápido","Promoções e descontos","Impressão de cupom (ESC/HTML)"] },
-      { title:"Modo offline (contingência)", items:["Continua vendendo sem internet","Salva local com segurança","Sincroniza ao reconectar","Evita venda duplicada (idempotência)"] },
-      { title:"Reposição por bipagem", items:["Entrada rápida no estoque","Histórico de movimentações","Menos erro no controle"] },
-      { title:"Caixa completo", items:["Abertura e fechamento","Relatórios por período","Conferência de pagamentos"] },
-      { title:"Dashboards + ranking", items:["Painel de vendas","Pódio das vendedoras","Comparativo por quiosque"] },
-      { title:"Metas gamificadas", items:["Cadastra meta","Barra de progresso automática","Motiva a equipe no dia"] },
-    ];
+  // Dores (conversão melhora MUITO)
+  const PAINS = [
+    { icon:"📶", title:"Internet caiu = fila travou?", desc:"No QRize você continua vendendo offline e sincroniza depois." },
+    { icon:"💸", title:"Caixa não bate no fim do dia?", desc:"Fechamento simples + relatórios pra achar diferença rápido." },
+    { icon:"📦", title:"Estoque some e ninguém sabe por quê?", desc:"Entrada/saída e histórico por produto (sem planilha)." },
+    { icon:"👀", title:"Dono não consegue acompanhar de longe?", desc:"Visão de gerente/admin, permissões e relatórios por unidade." },
+  ];
 
-    const TESTIMONIALS = [
-      { name:"Princesa Reborn - Interlagos", role:"Shopping", text:"A organização das vendas melhorou muito. Hoje conseguimos fechar o dia com muito mais segurança e controle." },
-      { name:"Princesa Reborn - Ibirapuera", role:"Shopping", text:"O painel de resultados facilitou demais o acompanhamento das metas. A equipe ficou mais motivada e focada." },
-      { name:"Princesa Reborn - Itaquera", role:"Shopping", text:"O controle de estoque ficou muito mais preciso. Reduzimos perdas e ganhamos tempo no atendimento." },
-      { name:"Princesa Reborn - Center Norte", role:"Shopping", text:"Os relatórios ajudam bastante na tomada de decisão. Agora sabemos exatamente quais produtos giram mais." },
-      { name:"Princesa Reborn - Aricanduva", role:"Shopping", text:"O sistema trouxe mais agilidade no caixa e diminuiu filas nos horários de pico." },
-      { name:"Princesa Reborn - Anália Franco", role:"Shopping", text:"Ficou muito mais fácil acompanhar comissão e desempenho individual. A equipe está mais engajada." },
-    ];
+  // Value props (benefícios, não “feature list”)
+  const VALUE_PROPS = [
+    { icon:"⚡", title:"Fila anda: bipou, vendeu", desc:"PDV pensado para balcão: menos cliques, mais velocidade." },
+    { icon:"🛰️", title:"Offline real + sincronização", desc:"Caiu a internet? Continua. Voltou? Sincroniza automático." },
+    { icon:"💰", title:"Fechamento que bate", desc:"Abertura/fechamento e relatórios fáceis pro dia a dia." },
+    { icon:"📦", title:"Estoque prático", desc:"Custo/margem, reposição e histórico — sem bagunça." },
+    { icon:"🏬", title:"Multi-quiosque simples", desc:"Administre várias unidades com permissões e visão de gerente." },
+    { icon:"🧾", title:"Nota fiscal online inclusa", desc:"No offline você vende; ao reconectar, emite a NF." },
+  ];
 
-    const PRICING = [
-      { name:"Start", price:"R$ 149/mês", desc:"Pra quem quer vender e controlar o básico bem feito.", items:["Venda por bipagem","Estoque + reposição","Caixa + relatórios","Usuários por nível"], cta:"Quero começar" },
-      { name:"Pro", price:"R$ 199/mês", desc:"Pra quem quer gestão e performance do time.", items:["Tudo do Start","Modo offline (contingência)","Dashboards de vendas","Pódio + metas gamificadas","Controle de ponto"], highlight:true, cta:"Quero o Pro" },
-      { name:"Growth", price:"Sob consulta", desc:"Para redes com vários quiosques e necessidades específicas.", items:["Treinamento","Padronização de PDV/impressão","Integrações e ajustes","SLA/atendimento"], cta:"Falar comigo" },
-    ];
+  // Seções mais persuasivas
+  const SECTIONS = [
+    {
+      title:"O que muda no seu quiosque em 7 dias",
+      bullets: [
+        "Você para de depender da internet pra vender.",
+        "Fechamento de caixa fica mais rápido (e com menos diferença).",
+        "Estoque começa a fazer sentido (custo, margem e reposição).",
+        "Você acompanha a operação mesmo quando não está no quiosque."
+      ]
+    },
+    {
+      title:"O que tem dentro (pra quem gosta de ver tudo)",
+      bullets: [
+        "PDV por bipagem + busca rápida de SKU",
+        "Descontos/promoções e impressão de cupom (HTML/ESC)",
+        "Estoque: custo/margem + movimentações + reposição",
+        "Caixa: abertura/fechamento + relatórios por período",
+        "Dashboards: vendas, metas e ranking/pódio",
+        "Controle de acesso por perfil (permissões)",
+        "Multi-quiosque: gerente/admin para várias unidades",
+        "NF online inclusa no plano"
+      ]
+    }
+  ];
 
-    const FAQ = [
-      { q:"E se a internet cair?", a:"Você continua vendendo no modo contingência/offline. As vendas ficam salvas localmente e o sistema sincroniza automaticamente quando a internet voltar. (Emissão de nota fiscal precisa de internet.)" },
-      { q:"Imprime cupom?", a:"Sim. Dá para imprimir cupom de forma confiável (HTML/ESC). O ideal é padronizar o navegador e a impressora do PDV." },
-      { q:"Nota fiscal sai offline?", a:"Não. Emissão de NFC-e/NF precisa de internet. No offline você vende normalmente e emite a nota quando reconectar." },
-      { q:"Funciona em tablet?", a:"Funciona em tablet, PC e notebook pelo navegador. Para quiosque, recomendamos aparelho com boa performance e, se possível, internet + backup (4G)." },
-      { q:"Tem controle de acesso?", a:"Sim. Níveis de usuário para limitar o que cada pessoa pode ver e fazer." },
-    ];
-  </script>
+  // Comparativo (mantém “honesto”, mas bate mais forte)
+  const WHY_BETTER = [
+    { title:"Velocidade na venda", good:"Fluxo feito pra fila (bipa e vai)", bad:"Mais cliques e burocracia" },
+    { title:"Internet instável", good:"Vende offline e sincroniza", bad:"Trava / perde tempo / para de vender" },
+    { title:"Rotina do dia", good:"Caixa + estoque pensados pra quiosque", bad:"Você acaba completando com planilha" },
+    { title:"Rede de quiosques", good:"Multi-unidade simples", bad:"Multi-unidade costuma ser caro e confuso" },
+    { title:"NF no plano", good:"Sem surpresa e sem add-on", bad:"Taxas extras e pacotes escondidos" },
+  ];
 
-  <!-- Top bar -->
-  <header class="sticky top-0 bg-slate-950/80 backdrop-blur border-b border-slate-800/70">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="#top" class="flex items-center gap-3">
-        <img src="qrize.png" alt="QRize ERP + CRM" class="h-20 md:h-24 w-auto object-contain" />
+  // Planos com copy mais “resultado”
+  const PRICING = [
+    {
+      name:"Start",
+      price:"R$ 149/mês",
+      desc:"Pra rodar PDV + caixa + estoque e parar de se perder no dia a dia.",
+      items:[
+        "PDV por bipagem",
+        "Estoque + reposição",
+        "Caixa + relatórios",
+        "Perfis e permissões",
+        "Exportação de dados"
+      ],
+      cta:"Quero rodar o Start"
+    },
+    {
+      name:"Pro",
+      price:"R$ 199/mês",
+      desc:"Pra quem pega pico e não pode parar (offline + gestão completa).",
+      highlight:true,
+      items:[
+        "Tudo do Start",
+        "Offline/contingência + sincronização",
+        "Dashboards de vendas",
+        "Metas + ranking/pódio",
+        "Controle de ponto",
+        "Nota fiscal online inclusa"
+      ],
+      cta:"Quero rodar o Pro"
+    },
+    {
+      name:"Growth",
+      price:"Sob consulta",
+      desc:"Pra redes: padronização, treinamento e integrações sob medida.",
+      items:[
+        "Treinamento e padronização de PDV",
+        "Ajustes, integrações e automações",
+        "SLA e suporte prioritário",
+        "Onboarding para várias unidades"
+      ],
+      cta:"Quero falar sobre rede"
+    }
+  ];
+
+  // FAQ mais enxuto e objetivo
+  const FAQ = [
+    { q:"Se a internet cair, eu paro de vender?", a:"Não. Você continua vendendo no modo offline/contingência. Quando voltar, o QRize sincroniza automaticamente. (NF exige internet.)" },
+    { q:"A nota fiscal está inclusa?", a:"Sim. A emissão online está inclusa no plano. Se estiver offline, você vende e emite quando reconectar." },
+    { q:"Funciona em tablet?", a:"Sim. Tablet, notebook ou PC via navegador. (Recomendamos um setup simples e padronizado no PDV.)" },
+    { q:"Dá pra ter gerente/admin pra várias unidades?", a:"Sim. Multi-quiosque com permissões e relatórios por unidade." },
+    { q:"Imprime cupom?", a:"Sim. Suporta impressão (HTML/ESC). O ideal é padronizar navegador e impressora para estabilidade." },
+    { q:"Se eu quiser sair, consigo levar meus dados?", a:"Sim. Você exporta seus dados quando precisar." }
+  ];
+
+  // Oferta/garantia (sem “grátis” chamativo demais)
+  function onboardingCopy() {
+    return {
+      title: "Implantação guiada + teste na prática",
+      desc: "Você vê funcionando no seu quiosque antes de decidir. Sem enrolação: cadastra, bipa, vende e fecha o caixa.",
+      bullets: [
+        "Checklist do PDV (impressora, leitor, internet/4G)",
+        "Configuração inicial (produtos, usuários e permissões)",
+        "Treinamento objetivo (operador + gerente)",
+        "Acompanhamento no primeiro fechamento de caixa"
+      ]
+    }
+  }
+</script>
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur border-b border-slate-800/70">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-3">
+      <img class="w-24" src="qrize.png" alt="QRize Logo">
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+      <a class="hover:text-blue-300 transition" href="#dores">Dores</a>
+      <a class="hover:text-blue-300 transition" href="#porque">Por que QRize</a>
+      <a class="hover:text-blue-300 transition" href="#recursos">Recursos</a>
+      <a class="hover:text-blue-300 transition" href="#comparativo">Comparativo</a>
+      <a class="hover:text-blue-300 transition" href="#precos">Planos</a>
+      <a class="hover:text-blue-300 transition" href="#faq">FAQ</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a id="ctaTop" target="_blank"
+         class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl
+                bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition shadow-glow
+                hover:-translate-y-0.5 active:translate-y-0">
+        Ver demo (15 min) <span aria-hidden="true">→</span>
       </a>
 
-      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
-        <a class="hover:text-blue-300 transition" href="#beneficios">Benefícios</a>
-        <a class="hover:text-blue-300 transition" href="#recursos">Recursos</a>
-        <a class="hover:text-blue-300 transition" href="#precos">Planos</a>
-        <a class="hover:text-blue-300 transition" href="#faq">FAQ</a>
-      </nav>
-
-      <div class="flex items-center gap-3">
-        <a id="ctaTop"
-           target="_blank"
-           class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl
-                  bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition shadow-glow
-                  hover:-translate-y-0.5 active:translate-y-0"
-        >
-          Solicitar Demo <span aria-hidden="true">→</span>
-        </a>
-
-        <button
-          id="menuBtn"
-          type="button"
-          aria-label="Abrir menu"
-          aria-controls="mobileMenu"
-          aria-expanded="false"
-          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl
-                 border border-slate-800 bg-slate-900/60 text-slate-100 hover:bg-slate-900 transition"
-        >
-          <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
-      </div>
+      <button id="menuBtn" type="button" aria-label="Abrir menu" aria-controls="mobileMenu" aria-expanded="false"
+        class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl
+               border border-slate-800 bg-slate-900/60 text-slate-100 hover:bg-slate-900 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <div id="mobileMenu" class="md:hidden hidden border-t border-slate-800/70 bg-slate-950">
-      <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-3 text-slate-200 font-semibold">
-        <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#beneficios">Benefícios</a>
-        <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#recursos">Recursos</a>
-        <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#precos">Planos</a>
-        <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#faq">FAQ</a>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-slate-800/70 bg-slate-950">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-3 text-slate-200 font-semibold">
+      <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#dores">Dores</a>
+      <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#porque">Por que QRize</a>
+      <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#recursos">Recursos</a>
+      <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#comparativo">Comparativo</a>
+      <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#precos">Planos</a>
+      <a class="py-2 px-3 rounded-xl hover:bg-slate-900 hover:text-blue-300 transition" href="#faq">FAQ</a>
 
-        <a id="ctaMobile"
-           target="_blank"
-           class="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl
-                  bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition shadow-glow"
-        >
-          Solicitar Demo <span aria-hidden="true">→</span>
-        </a>
-      </div>
+      <a id="ctaMobile" target="_blank"
+         class="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl
+                bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition shadow-glow">
+        Ver demo (15 min) <span aria-hidden="true">→</span>
+      </a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- Hero -->
-  <section id="top" class="top-0 relative overflow-hidden">
-    <div class="absolute inset-0">
-      <div class="absolute -top-28 -right-28 w-80 h-80 rounded-full bg-blue-600/15 blur-3xl"></div>
-      <div class="absolute -bottom-28 -left-28 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-blue-50/70 via-slate-50 to-slate-50"></div>
-      <div class="absolute inset-0 [background:radial-gradient(1200px_500px_at_20%_0%,rgba(59,130,246,.18),transparent_60%)]"></div>
-    </div>
+<!-- Hero -->
+<section id="top" class="relative overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute -top-28 -right-28 w-80 h-80 rounded-full bg-blue-600/15 blur-3xl"></div>
+    <div class="absolute -bottom-28 -left-28 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-blue-50/70 via-slate-50 to-slate-50"></div>
+    <div class="absolute inset-0 [background:radial-gradient(1200px_500px_at_20%_0%,rgba(59,130,246,.18),transparent_60%)]"></div>
+  </div>
 
-    <div class="relative max-w-6xl mx-auto px-4 pt-2 pb-14 md:pt-4 md:pb-20">
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-extrabold shadow">
-            Feito para quiosques • Vendas rápidas • Controle total
-          </div>
-
-          <!-- NOVO: destaque offline -->
-          <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-extrabold border border-blue-200">
-            🛰️ Vende mesmo sem internet • sincroniza ao reconectar
-          </div>
-
-          <h1 class="mt-4 text-4xl md:text-5xl font-black tracking-tight leading-[1.05]">
-            Venda mais rápido no quiosque com
-            <span class="text-blue-700">bipagem</span>, metas e controle de caixa.
-          </h1>
-
-          <p class="mt-4 text-lg text-slate-700">
-            <b id="brandInline"></b> é um sistema web para quiosques com:
-            venda e reposição por bipagem, estoque, abertura/fechamento de caixa, dashboards,
-            ranking de vendedoras, metas gamificadas e <b>modo contingência/offline</b>.
-          </p>
-
-          <div class="mt-6 flex flex-col sm:flex-row gap-3">
-            <a id="ctaHero"
-               target="_blank"
-               class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-glow
-                      hover:-translate-y-0.5 active:translate-y-0 transition"
-            >
-              Quero uma demo
-            </a>
-
-            <a href="#recursos"
-               class="px-5 py-3 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 font-extrabold transition"
-            >
-              Ver recursos
-            </a>
-          </div>
-
-          <div class="mt-6 grid grid-cols-2 gap-3 text-sm">
-            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition">
-              <div class="font-extrabold text-blue-900">⚡ Bipou, vendeu</div>
-              <div class="text-slate-600">Fluxo rápido pra fila não travar.</div>
-            </div>
-            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition">
-              <div class="font-extrabold text-blue-900">🛰️ Internet caiu?</div>
-              <div class="text-slate-600">Continua vendendo no offline.</div>
-            </div>
-          </div>
-
-          <div class="mt-5 flex flex-wrap gap-2 text-xs">
-            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-100 font-bold">Sem travar a fila</span>
-            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-100 font-bold">Sincroniza automático</span>
-            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-100 font-bold">Acesso por perfil</span>
-          </div>
-
-          <p class="mt-4 text-xs text-slate-500">
-            * Nota fiscal precisa de internet. No offline você vende e emite quando reconectar.
-          </p>
+  <div class="relative max-w-6xl mx-auto px-4 pt-8 pb-12 md:pt-12 md:pb-18">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-extrabold shadow">
+          Sistema para quiosques • Shopping • Operação rápida
         </div>
 
-        <div class="bg-white/85 backdrop-blur border border-slate-200 rounded-3xl shadow-glow p-5">
-          <div class="flex items-center justify-between">
-            <div class="font-extrabold">Prévia do painel</div>
-            <div class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-extrabold">Ao vivo</div>
-          </div>
+        <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-extrabold border border-blue-200">
+          🛰️ Offline real: continua vendendo sem internet
+        </div>
 
-          <div class="mt-4 grid grid-cols-2 gap-3">
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="text-xs text-slate-500">Vendas hoje</div>
-              <div class="text-2xl font-extrabold">R$ 4.980</div>
-            </div>
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="text-xs text-slate-500">Meta do dia</div>
-              <div class="mt-2 h-3 rounded-full bg-slate-200 overflow-hidden">
-                <div class="h-3 w-[68%] bg-blue-600"></div>
-              </div>
-              <div class="text-xs text-slate-600 mt-2">68% concluída</div>
-            </div>
-            <div class="col-span-2 p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="text-xs text-slate-500">Pódio de vendedoras</div>
-              <div class="mt-2 grid grid-cols-3 gap-2 text-sm">
-                <div class="p-2 rounded-xl bg-white border border-slate-200">
-                  <div class="font-extrabold">🥇 Ana</div><div class="text-slate-600">R$ 1.720</div>
-                </div>
-                <div class="p-2 rounded-xl bg-white border border-slate-200">
-                  <div class="font-extrabold">🥈 Bia</div><div class="text-slate-600">R$ 1.410</div>
-                </div>
-                <div class="p-2 rounded-xl bg-white border border-slate-200">
-                  <div class="font-extrabold">🥉 Carol</div><div class="text-slate-600">R$ 980</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <h1 class="mt-4 text-4xl md:text-5xl font-black tracking-tight leading-[1.05]">
+          Seu quiosque <span class="text-blue-700">não pode parar</span>.
+          <span class="text-slate-900">O QRize mantém a venda rodando.</span>
+        </h1>
 
-          <!-- mini badge offline -->
-          <div class="mt-4 p-4 rounded-2xl border border-blue-200 bg-blue-50">
-            <div class="font-extrabold text-blue-900">🛰️ Contingência/offline</div>
-            <div class="text-slate-700 mt-1 text-sm">
-              Vendas salvas localmente e sincronizadas ao reconectar.
-            </div>
+        <p class="mt-4 text-lg text-slate-700">
+          <b id="brandInline"></b> é um sistema feito para quiosques: <b>PDV por bipagem</b>, <b>caixa que bate</b>,
+          <b>estoque prático</b>, <b>multi-quiosque</b> e <b>modo offline com sincronização</b>.
+          <span class="text-slate-600">NF online inclusa no plano.</span>
+        </p>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a id="ctaHero" target="_blank"
+             class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-glow
+                    hover:-translate-y-0.5 active:translate-y-0 transition">
+            Quero ver a demo (15 min)
+          </a>
+
+          <a href="#dores"
+             class="px-5 py-3 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 font-extrabold transition">
+            Isso serve pra mim?
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-slate-500">
+          * NF precisa de internet. No offline você vende e emite quando reconectar.
+        </p>
+      </div>
+
+      <div class="bg-white/85 backdrop-blur border border-slate-200 rounded-3xl shadow-glow p-5">
+        <div class="flex items-center justify-between">
+          <div class="font-extrabold">Comece sem drama</div>
+          <div class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-extrabold">Pronto para rodar</div>
+        </div>
+
+        <div id="metricsGrid" class="mt-4 grid grid-cols-2 gap-3"></div>
+
+        <div class="mt-4 p-4 rounded-2xl border border-blue-200 bg-blue-50">
+          <div class="font-extrabold text-blue-900">🛰️ Offline de verdade</div>
+          <div class="text-slate-700 mt-1 text-sm">
+            Caiu a internet? Você continua vendendo. Depois, o QRize sincroniza.
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- Benefícios -->
-  <section id="beneficios" class="max-w-6xl mx-auto px-4 py-14">
-    <div class="max-w-2xl">
-      <h2 class="text-3xl font-black">Feito para o dia a dia do quiosque</h2>
-      <p class="mt-2 text-slate-600">
-        Menos clique, mais venda. Gestão simples para dono e motivação para as vendedoras.
-      </p>
-    </div>
-
-    <div id="benefitsGrid" class="mt-8 grid md:grid-cols-3 gap-4"></div>
-  </section>
-
-  <!-- Recursos -->
-  <section id="recursos" class="bg-white border-y border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 py-14">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div>
-          <h2 class="text-3xl font-black">Recursos principais</h2>
-          <p class="mt-2 text-slate-600">Tudo organizado em um pacote fácil de entender.</p>
-        </div>
-        <a id="ctaProposal"
-           target="_blank"
-           class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-glow w-fit
-                  hover:-translate-y-0.5 active:translate-y-0 transition"
-        >
-          Pedir proposta
-        </a>
-      </div>
-
-      <div id="featuresGrid" class="mt-8 grid md:grid-cols-2 gap-4"></div>
-
-      <!-- atualizei o "Extra" -->
-      <div class="mt-8 p-6 rounded-2xl border border-blue-200 bg-blue-50">
-        <div class="font-extrabold text-blue-900">🛰️ Modo contingência/offline</div>
-        <div class="text-slate-700 mt-1">
-          Quando a internet oscila, o sistema <span class="font-semibold text-blue-900">continua vendendo</span>,
-          salva localmente e <span class="font-semibold text-blue-900">sincroniza automaticamente</span> ao reconectar.
-          <span class="text-slate-600">(Nota fiscal precisa de internet.)</span>
+        <div class="mt-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div class="text-xs text-slate-500 font-semibold">Prova social (coloque 1 depoimento real aqui)</div>
+          <div class="mt-2 text-sm text-slate-700">
+            “O fechamento ficou mais rápido e a gente parou de travar na hora do pico.”
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Depoimentos -->
-  <section class="max-w-6xl mx-auto px-4 py-14">
-    <h2 class="text-3xl font-black">Resultados e prova social</h2>
+<!-- Pains -->
+<section id="dores" class="max-w-6xl mx-auto px-4 py-14">
+  <div class="max-w-2xl">
+    <h2 class="text-3xl font-black">Se alguma dessas coisas acontece, a QRize é pra você</h2>
+    <p class="mt-2 text-slate-600">Sem papo de “ERP completo”. Aqui é rotina de quiosque.</p>
+  </div>
 
-    <div class="mt-5 flex items-center justify-between">
-      <div class="text-xs font-bold text-slate-500">Arraste para o lado →</div>
+  <div id="painsGrid" class="mt-8 grid md:grid-cols-2 gap-4"></div>
+
+  <div class="mt-8 p-6 rounded-2xl border border-slate-200 bg-white shadow-soft">
+    <div class="font-extrabold text-lg">Quer confirmar rápido?</div>
+    <div class="mt-1 text-slate-700">Eu te mostro em 15 min no WhatsApp com seu cenário (produto, bipagem, offline e fechamento).</div>
+    <a id="ctaPains" target="_blank"
+       class="mt-5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-glow transition">
+      Quero o teste guiado → 
+    </a>
+  </div>
+</section>
+
+<!-- Value props -->
+<section id="porque" class="max-w-6xl mx-auto px-4 py-14">
+  <div class="max-w-2xl">
+    <h2 class="text-3xl font-black">Por que o QRize vende mais (e dá menos dor de cabeça)</h2>
+    <p class="mt-2 text-slate-600">
+      Porque foi feito para quiosques: <b>pico, fila, internet instável e operação enxuta</b>.
+    </p>
+  </div>
+
+  <div id="valueGrid" class="mt-8 grid md:grid-cols-3 gap-4"></div>
+
+  <div class="mt-8 grid md:grid-cols-2 gap-4">
+    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+      <div class="font-extrabold text-xl">O “padrão QRize”</div>
+      <ul class="mt-3 space-y-2 text-slate-700">
+        <li class="flex gap-2"><span class="mt-1 w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span><span>Vender rápido no pico.</span></li>
+        <li class="flex gap-2"><span class="mt-1 w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span><span>Não parar quando a internet cair.</span></li>
+        <li class="flex gap-2"><span class="mt-1 w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span><span>Fechar caixa sem sofrimento.</span></li>
+        <li class="flex gap-2"><span class="mt-1 w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span><span>Estoque que dá pra confiar.</span></li>
+      </ul>
     </div>
 
-    <div id="testimonialsWrap"
-         class="mt-4 flex gap-4 overflow-x-auto pb-3 -mx-4 px-4 snap-x snap-mandatory
-                md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:mx-0 md:px-0 md:pb-0 md:snap-none
-                [scrollbar-width:thin]">
+    <div class="p-6 rounded-2xl border border-blue-200 bg-blue-50">
+      <div class="font-extrabold text-blue-900 text-xl" id="implTitle"></div>
+      <div class="text-slate-700 mt-1" id="implDesc"></div>
+      <ul class="mt-3 space-y-2 text-slate-700" id="implBullets"></ul>
+      <a id="ctaImpl" target="_blank"
+         class="mt-5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-glow transition">
+        Quero implantar no meu quiosque →
+      </a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Planos -->
-  <section id="precos" class="bg-slate-950 text-white">
-    <div class="max-w-6xl mx-auto px-4 py-14">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div>
-          <h2 class="text-3xl font-black">Planos</h2>
+<!-- Features -->
+<section id="recursos" class="bg-white border-y border-slate-200">
+  <div class="max-w-6xl mx-auto px-4 py-14">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div>
+        <h2 class="text-3xl font-black">Recursos (sem enrolação)</h2>
+        <p class="mt-2 text-slate-600">O que você realmente usa todo dia no quiosque.</p>
+      </div>
+      <a id="ctaProposal" target="_blank"
+         class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-glow w-fit
+                hover:-translate-y-0.5 active:translate-y-0 transition">
+        Ver demo no WhatsApp
+      </a>
+    </div>
+
+    <div id="sectionsGrid" class="mt-8 grid md:grid-cols-2 gap-4"></div>
+
+    <div class="mt-8 p-6 rounded-2xl border border-slate-200 bg-slate-50">
+      <div class="font-extrabold">Confiança</div>
+      <div class="mt-2 grid md:grid-cols-3 gap-3 text-sm text-slate-700">
+        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+          <div class="font-extrabold text-blue-900">Exportação</div>
+          <div class="text-slate-600">Seus dados são seus.</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+          <div class="font-extrabold text-blue-900">Permissões</div>
+          <div class="text-slate-600">Cada perfil vê o que precisa.</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+          <div class="font-extrabold text-blue-900">Offline</div>
+          <div class="text-slate-600">Operação continua rodando.</div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="mt-5 flex items-center justify-between">
-        <div class="text-xs font-bold text-slate-300">Arraste para o lado →</div>
-      </div>
+<!-- Comparison -->
+<section id="comparativo" class="max-w-6xl mx-auto px-4 py-14">
+  <h2 class="text-3xl font-black">Comparativo honesto</h2>
+  <p class="mt-2 text-slate-600">Sem falar mal de ninguém: só o que muda quando é quiosque de verdade.</p>
 
-      <div id="pricingWrap"
-           class="mt-4 flex gap-4 overflow-x-auto pb-3 -mx-4 px-4 snap-x snap-mandatory
-                  md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:mx-0 md:px-0 md:pb-0 md:snap-none
-                  [scrollbar-width:thin]">
+  <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
+    <div class="grid grid-cols-12 bg-slate-50 border-b border-slate-200 text-sm font-extrabold">
+      <div class="col-span-5 p-4">Ponto</div>
+      <div class="col-span-3 p-4 text-blue-900">QRize</div>
+      <div class="col-span-4 p-4 text-slate-700">Genéricos</div>
+    </div>
+    <div id="compareRows"></div>
+  </div>
+
+  <div class="mt-6 grid md:grid-cols-2 gap-4">
+    <div class="p-6 rounded-2xl border border-blue-200 bg-blue-50">
+      <div class="font-extrabold text-blue-900 text-xl">O que você compra, de verdade</div>
+      <div class="mt-2 text-slate-700">
+        <b>Venda rodando</b> mesmo sem internet, <b>caixa que bate</b> e <b>controle</b> sem planilhas.
       </div>
     </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="max-w-6xl mx-auto px-4 py-14">
-    <h2 class="text-3xl font-black">Perguntas frequentes</h2>
-    <div id="faqGrid" class="mt-8 grid md:grid-cols-2 gap-4"></div>
-  </section>
-
-  <!-- CTA final -->
-  <section class="bg-blue-600 text-white">
-    <div class="max-w-6xl mx-auto px-4 py-12">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div>
-          <div class="text-2xl font-black">Quer ver funcionando no seu quiosque?</div>
-          <div class="mt-1 text-blue-50">Eu te mostro uma demo e te passo o plano ideal.</div>
-        </div>
-        <a id="ctaFooter"
-           target="_blank"
-           class="px-6 py-3 rounded-xl bg-white text-slate-900 font-extrabold hover:bg-slate-100 shadow w-fit
-                  hover:-translate-y-0.5 active:translate-y-0 transition"
-        >
-          Chamar no WhatsApp
-        </a>
+    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+      <div class="font-extrabold text-xl">Eu provo em 15 minutos</div>
+      <div class="mt-2 text-slate-700">
+        Na demo eu mostro: <b>bipagem</b>, <b>offline</b> (simulando queda), <b>sincronização</b> e <b>fechamento</b>.
       </div>
+      <a id="ctaProve" target="_blank"
+         class="mt-5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-glow transition">
+        Me mostra na prática →
+      </a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="max-w-6xl mx-auto px-4 py-10 text-sm text-slate-500">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-      <div id="footerCopy"></div>
-      <div class="flex gap-4">
-        <a class="hover:text-blue-700" href="#top">Topo</a>
-        <a class="hover:text-blue-700" href="#precos">Planos</a>
-        <a class="hover:text-blue-700" href="#faq">FAQ</a>
+<!-- Pricing -->
+<section id="precos" class="bg-slate-950 text-white">
+  <div class="max-w-6xl mx-auto px-4 py-14">
+    <div>
+      <h2 class="text-3xl font-black">Planos</h2>
+      <p class="mt-2 text-slate-300">Sem pegadinha. Sem pacote escondido.</p>
+    </div>
+
+    <div class="mt-6 grid md:grid-cols-3 gap-4" id="pricingGrid"></div>
+
+    <p class="mt-6 text-xs text-slate-400">
+      * Emissão de NF requer internet. No offline você vende e emite quando reconectar.
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="max-w-6xl mx-auto px-4 py-14">
+  <h2 class="text-3xl font-black">Perguntas frequentes</h2>
+  <div id="faqGrid" class="mt-8 grid md:grid-cols-2 gap-4"></div>
+</section>
+
+<!-- Final CTA -->
+<section class="bg-blue-600 text-white">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <div class="text-2xl font-black">Quer parar de travar no pico ainda essa semana?</div>
+        <div class="mt-1 text-blue-50">Eu te mostro na prática e te ajudo a colocar pra rodar.</div>
       </div>
+      <a id="ctaFooter" target="_blank"
+         class="px-6 py-3 rounded-xl bg-white text-slate-900 font-extrabold hover:bg-slate-100 shadow w-fit
+                hover:-translate-y-0.5 active:translate-y-0 transition">
+        Chamar no WhatsApp
+      </a>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    document.title = `${BRAND_NAME} — Vendas rápidas por bipagem`;
-    document.getElementById('brandInline').textContent = BRAND_NAME;
-    document.getElementById('footerCopy').textContent =
-      `© ${new Date().getFullYear()} ${BRAND_NAME}. Todos os direitos reservados.`;
+<footer class="max-w-6xl mx-auto px-4 py-10 text-sm text-slate-500">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div id="footerCopy"></div>
+    <div class="flex gap-4">
+      <a class="hover:text-blue-700" href="#top">Topo</a>
+      <a class="hover:text-blue-700" href="#precos">Planos</a>
+      <a class="hover:text-blue-700" href="#faq">FAQ</a>
+    </div>
+  </div>
+</footer>
 
-    ["ctaTop","ctaMobile","ctaHero","ctaProposal","ctaFooter"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.href = WHATS_URL;
+<script>
+  // Branding
+  document.title = `${BRAND_NAME} — Pare de perder venda quando a internet cai`;
+  document.getElementById('brandInline').textContent = BRAND_NAME;
+  document.getElementById('footerCopy').textContent = `© ${new Date().getFullYear()} ${BRAND_NAME}. Todos os direitos reservados.`;
+
+  // CTAs
+  ["ctaTop","ctaMobile","ctaHero","ctaProposal","ctaFooter","ctaImpl","ctaProve","ctaPains"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = WHATS_URL;
+  });
+
+  // Metrics
+  const metricsGrid = document.getElementById("metricsGrid");
+  metricsGrid.innerHTML = METRICS.map(m => `
+    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+      <div class="text-xs text-slate-500">${m.label}</div>
+      <div class="text-lg font-extrabold">${m.value}</div>
+    </div>
+  `).join("");
+
+  // Pains
+  document.getElementById("painsGrid").innerHTML = PAINS.map(p => `
+    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition hover:-translate-y-0.5">
+      <div class="text-2xl">${p.icon}</div>
+      <div class="mt-2 font-extrabold text-lg text-slate-900">${p.title}</div>
+      <div class="mt-1 text-slate-600">${p.desc}</div>
+      <div class="mt-4 h-1 w-16 rounded-full bg-blue-600/80"></div>
+    </div>
+  `).join("");
+
+  // Value props
+  document.getElementById("valueGrid").innerHTML = VALUE_PROPS.map(v => `
+    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition hover:-translate-y-0.5">
+      <div class="text-2xl">${v.icon}</div>
+      <div class="mt-2 font-extrabold text-lg text-blue-950">${v.title}</div>
+      <div class="mt-1 text-slate-600">${v.desc}</div>
+      <div class="mt-4 h-1 w-16 rounded-full bg-blue-600/80"></div>
+    </div>
+  `).join("");
+
+  // Onboarding box
+  const impl = onboardingCopy();
+  document.getElementById("implTitle").textContent = impl.title;
+  document.getElementById("implDesc").textContent = impl.desc;
+  document.getElementById("implBullets").innerHTML = impl.bullets.map(b => `
+    <li class="flex items-start gap-2">
+      <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+      <span>${b}</span>
+    </li>
+  `).join("");
+
+  // Sections
+  document.getElementById("sectionsGrid").innerHTML = SECTIONS.map(s => `
+    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-white hover:shadow-glow transition hover:-translate-y-0.5">
+      <div class="font-extrabold text-xl text-blue-950">${s.title}</div>
+      <ul class="mt-3 space-y-2 text-slate-700">
+        ${s.bullets.map(it => `
+          <li class="flex items-start gap-2">
+            <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+            <span>${it}</span>
+          </li>
+        `).join("")}
+      </ul>
+    </div>
+  `).join("");
+
+  // Comparison rows
+  document.getElementById("compareRows").innerHTML = WHY_BETTER.map(r => `
+    <div class="grid grid-cols-12 border-b border-slate-100 text-sm">
+      <div class="col-span-5 p-4 font-semibold text-slate-800">${r.title}</div>
+      <div class="col-span-3 p-4 text-blue-900 font-bold">${r.good}</div>
+      <div class="col-span-4 p-4 text-slate-600">${r.bad}</div>
+    </div>
+  `).join("");
+
+  // Pricing
+  document.getElementById("pricingGrid").innerHTML = PRICING.map(p => `
+    <div class="p-6 rounded-2xl border bg-white/5 transition hover:bg-white/10 ${p.highlight ? 'border-blue-400 shadow-glow' : 'border-white/10'}">
+      <div class="flex items-center justify-between gap-3">
+        <div class="font-extrabold text-xl">${p.name}</div>
+        ${p.highlight ? `<div class="text-xs font-extrabold px-2 py-1 rounded-full bg-blue-600">Recomendado</div>` : ``}
+      </div>
+      <div class="mt-3 text-3xl font-extrabold">${p.price}</div>
+      <div class="mt-2 text-slate-200">${p.desc}</div>
+      <ul class="mt-5 space-y-2 text-slate-100">
+        ${p.items.map(it => `
+          <li class="flex items-start gap-2">
+            <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+            <span>${it}</span>
+          </li>
+        `).join("")}
+      </ul>
+      <a target="_blank" href="${WHATS_URL}"
+         class="mt-6 inline-flex w-full justify-center px-5 py-3 rounded-xl font-extrabold
+                ${p.highlight ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-white text-slate-900 hover:bg-slate-100'}">
+        ${p.cta}
+      </a>
+    </div>
+  `).join("");
+
+  // FAQ
+  document.getElementById("faqGrid").innerHTML = FAQ.map(f => `
+    <details class="group p-5 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition">
+      <summary class="cursor-pointer list-none flex items-center justify-between gap-3 font-extrabold">
+        <span>${f.q}</span>
+        <span class="text-blue-500 group-open:rotate-180 transition">⌄</span>
+      </summary>
+      <div class="mt-3 text-slate-700">${f.a}</div>
+    </details>
+  `).join("");
+
+  // Mobile menu
+  (function () {
+    const btn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    if (!btn || !menu) return;
+
+    const closeMenu = () => { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); };
+    const openMenu  = () => { menu.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); };
+
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeMenu() : openMenu();
     });
 
-    const benefitsGrid = document.getElementById('benefitsGrid');
-    benefitsGrid.innerHTML = BENEFITS.map(b => `
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition
-                  hover:-translate-y-0.5">
-        <div class="text-2xl">${b.icon}</div>
-        <div class="mt-2 font-extrabold text-lg text-blue-950">${b.title}</div>
-        <div class="mt-1 text-slate-600">${b.desc}</div>
-        <div class="mt-4 h-1 w-16 rounded-full bg-blue-600/80"></div>
-      </div>
-    `).join('');
+    menu.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+  })();
+</script>
 
-    const featuresGrid = document.getElementById('featuresGrid');
-    featuresGrid.innerHTML = FEATURES.map(r => `
-      <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-white hover:shadow-glow transition
-                  hover:-translate-y-0.5">
-        <div class="font-extrabold text-xl text-blue-950">${r.title}</div>
-        <ul class="mt-3 space-y-2 text-slate-700">
-          ${(r.items || []).map(it => `
-            <li class="flex items-start gap-2">
-              <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-              <span>${it}</span>
-            </li>
-          `).join('')}
-        </ul>
-      </div>
-    `).join('');
-
-    const testimonialsWrap = document.getElementById('testimonialsWrap');
-    testimonialsWrap.innerHTML = TESTIMONIALS.map(d => `
-      <article class="min-w-[85%] sm:min-w-[70%] md:min-w-0 snap-start
-                      p-6 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition
-                      hover:-translate-y-0.5">
-        <div class="text-slate-700">“${d.text}”</div>
-        <div class="mt-4 font-extrabold text-blue-950">${d.name}</div>
-        <div class="text-sm text-slate-500">${d.role}</div>
-        <div class="mt-4 h-1 w-12 rounded-full bg-blue-600/80"></div>
-      </article>
-    `).join('');
-
-    const pricingWrap = document.getElementById('pricingWrap');
-    pricingWrap.innerHTML = PRICING.map(p => `
-      <div class="min-w-[88%] sm:min-w-[70%] md:min-w-0 snap-start
-                  p-6 rounded-2xl border bg-white/5 transition hover:bg-white/10
-                  ${p.highlight ? 'border-blue-400 shadow-glow' : 'border-white/10'}">
-        <div class="flex items-center justify-between gap-3">
-          <div class="font-extrabold text-xl">${p.name}</div>
-          ${p.highlight ? `<div class="text-xs font-extrabold px-2 py-1 rounded-full bg-blue-600">Mais vendido</div>` : ``}
-        </div>
-
-        <div class="mt-3 text-3xl font-extrabold">${p.price}</div>
-        <div class="mt-2 text-slate-200">${p.desc}</div>
-
-        <ul class="mt-5 space-y-2 text-slate-100">
-          ${(p.items || []).map(it => `
-            <li class="flex items-start gap-2">
-              <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-              <span>${it}</span>
-            </li>
-          `).join('')}
-        </ul>
-
-        <a target="_blank" href="${WHATS_URL}"
-           class="mt-6 inline-flex w-full justify-center px-5 py-3 rounded-xl font-extrabold
-                  ${p.highlight ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-white text-slate-900 hover:bg-slate-100'}">
-          ${p.cta}
-        </a>
-      </div>
-    `).join('');
-
-    const faqGrid = document.getElementById('faqGrid');
-    faqGrid.innerHTML = FAQ.map(f => `
-      <details class="group p-5 rounded-2xl bg-white border border-slate-200 shadow-soft hover:shadow-glow transition">
-        <summary class="cursor-pointer list-none flex items-center justify-between gap-3 font-extrabold">
-          <span>${f.q}</span>
-          <span class="text-blue-500 group-open:rotate-180 transition">⌄</span>
-        </summary>
-        <div class="mt-3 text-slate-700">${f.a}</div>
-      </details>
-    `).join('');
-
-    (function () {
-      const btn = document.getElementById('menuBtn');
-      const menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-
-      const closeMenu = () => { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); };
-      const openMenu  = () => { menu.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); };
-
-      btn.addEventListener('click', () => {
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
-      });
-
-      menu.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', closeMenu));
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-    })();
-  </script>
 </body>
 </html>
